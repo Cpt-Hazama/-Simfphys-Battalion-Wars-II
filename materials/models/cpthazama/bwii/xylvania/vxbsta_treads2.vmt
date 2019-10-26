@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/cpthazama/bwii/xylvania/vxbsta_treads"
+	"$bumpmap" 	"models/cpthazama/bwii/xylvania/vxbsta_treads_n"
+	"$alphatest" "1"
+}

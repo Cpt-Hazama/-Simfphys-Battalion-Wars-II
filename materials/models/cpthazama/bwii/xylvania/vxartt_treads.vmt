@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/cpthazama/bwii/xylvania/vxartt_treads"
+
+	//"Proxies"
+	//{
+	//	"TextureScroll"
+	//	{
+	//		"textureScrollVar" "$basetexturetransform"
+	//		"textureScrollRate" 5
+	//		"textureScrollAngle" -180
+	//	}
+	//}
+}

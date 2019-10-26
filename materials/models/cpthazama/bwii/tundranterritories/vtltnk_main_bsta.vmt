@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/cpthazama/bwii/tundranterritories/vtltnk_main_bsta"
+	"$bumpmap" 	"models/cpthazama/bwii/tundranterritories/vtltnk_main_n"
+
+	"$phong" "1"
+	"$phongboost" "1.1"						
+	"$phongfresnelranges"	"[ .2 1.2 8]"	
+}

@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/cpthazama/bwii/angloisles/vaiartillery2_main"
+	"$bumpmap" 	"models/cpthazama/bwii/angloisles/vaiartillery2_main_n"
+	"$alphatest" "1"
+
+	"$phong" "1"
+	"$phongboost" "1.1"			
+	"$phongfresnelranges"	"[ .2 1.2 8]"	
+
+	"$normalmapalphaenvmapmask" 1				
+	"$envmap" "env_cubemap"					
+	"$envmaptint" "[ .01 .01 .01 ]"					
+ 	"$envmapFresnel" "0.5"
+
+	"$rimlight"     "1"
+	"$rimlightexponent"   "1" 
+	"$rimlightboost"   "1"
+	"$rimmask"      "1"
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/cpthazama/bwii/tundranterritories/vtltrat_treads"
+	"$bumpmap" 	"models/cpthazama/bwii/tundranterritories/vtltrat_treads_n"
+	"$alphatest" "1"
+}

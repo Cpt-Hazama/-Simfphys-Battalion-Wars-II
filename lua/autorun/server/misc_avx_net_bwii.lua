@@ -1,0 +1,1 @@
+util.AddNetworkString( "avx_misc_register_tank_custom" )
