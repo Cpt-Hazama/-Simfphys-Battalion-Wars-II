@@ -9,7 +9,7 @@ local V = {
 	Members = {
 		Mass = 15000,
 		AirFriction = 2,
-		Inertia = Vector(100000,80000,15000),
+		-- Inertia = Vector(100000,80000,15000),
 		
 		OnSpawn = function(ent)
 			ent:SetNWBool("TurretSafeMode",false)

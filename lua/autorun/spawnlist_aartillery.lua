@@ -36,7 +36,7 @@ local V = {
 	Members = {
 		Mass = 16500,
 		AirFriction = 5,
-		Inertia = Vector(100000,80000,10000),
+		-- Inertia = Vector(100000,80000,10000),
 		LightsTable = "bwii_aartillery",
 		
 		OnSpawn = function(ent)

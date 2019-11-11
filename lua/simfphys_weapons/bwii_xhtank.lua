@@ -439,7 +439,7 @@ function simfphys.weapon:AimCannon( ply, vehicle, pod, Attachment )
 			})
 			if tr.Hit && IsValid(tr.Entity) then
 				local ent = tr.Entity
-				if (ent:IsNPC() || ent:IsPlayer() || (ent:IsVehicle() && ent != vehicle)) then
+				if (ent:IsNPC() || ent:IsPlayer() || (ent:IsVehicle() && ent != vehicle) || ent.LFS) then
 					vehicle.LockTarget = ent
 				end
 			end
@@ -447,33 +447,45 @@ function simfphys.weapon:AimCannon( ply, vehicle, pod, Attachment )
 	else
 		vehicle.LockTarget = NULL
 	end
-
-	local AimRate = chasisTurnSpeed
-
-	local Angles = vehicle:WorldToLocalAngles( Aimang )
-
-	if !IsValid(vehicle.LockTarget) then
-		vehicle.sm_pp_yaw = vehicle.sm_pp_yaw and math.ApproachAngle( vehicle.sm_pp_yaw, Angles.y + ppTurretYawAddition, AimRate * FrameTime() ) or 0
-		vehicle.sm_pp_pitch = vehicle.sm_pp_pitch and math.ApproachAngle( vehicle.sm_pp_pitch, Angles.p + ppTurretPitchAddition, AimRate * FrameTime() ) or 0
+	
+	if IsValid(vehicle.LockTarget) then
+		local AimRate = chasisTurnSpeed
+		local enemy = vehicle.LockTarget
+		local selfpos = vehicle:GetPos() +vehicle:OBBCenter()
+		local selfang = vehicle:GetAngles()
+		local targetang = (enemy:GetPos() -selfpos):Angle()
+		local pitch = math.AngleDifference(targetang.p,selfang.p)
+		local yaw = math.AngleDifference(targetang.y,selfang.y)
+		vehicle:SetPoseParameter(ppTurretPitch,-math.ApproachAngle(vehicle:GetPoseParameter(ppTurretPitch),pitch,AimRate) +ppTurretPitchAddition)
+		vehicle:SetPoseParameter(ppTurretYaw,math.ApproachAngle(vehicle:GetPoseParameter(ppTurretYaw),yaw,AimRate))
 	else
-		local tAng = (vehicle:GetPos() -vehicle.LockTarget:GetPos()):Angle()
-		-- local tAng = Aimang -vehicle.LockTarget:GetAngles()
-		vehicle.sm_pp_yaw = vehicle.sm_pp_yaw and math.ApproachAngle( vehicle.sm_pp_yaw, tAng.y + ppTurretYawAddition, AimRate * FrameTime() ) or 0
-		vehicle.sm_pp_pitch = vehicle.sm_pp_pitch and math.ApproachAngle( vehicle.sm_pp_pitch, tAng.p + ppTurretPitchAddition, AimRate * FrameTime() ) or 0
-	end
+		local AimRate = chasisTurnSpeed
 
-	local TargetAng = Angle(vehicle.sm_pp_pitch,vehicle.sm_pp_yaw,0)
-	TargetAng:Normalize()
+		local Angles = vehicle:WorldToLocalAngles( Aimang )
 
-	if reverseChasisYaw then
-		vehicle:SetPoseParameter(ppTurretYaw, -TargetAng.y )
-	else
-		vehicle:SetPoseParameter(ppTurretYaw, TargetAng.y )
-	end
-	if reverseChasisPitch then
-		vehicle:SetPoseParameter(ppTurretPitch, -TargetAng.p )
-	else
-		vehicle:SetPoseParameter(ppTurretPitch, TargetAng.p )
+		if !IsValid(vehicle.LockTarget) then
+			vehicle.sm_pp_yaw = vehicle.sm_pp_yaw and math.ApproachAngle( vehicle.sm_pp_yaw, Angles.y + ppTurretYawAddition, AimRate * FrameTime() ) or 0
+			vehicle.sm_pp_pitch = vehicle.sm_pp_pitch and math.ApproachAngle( vehicle.sm_pp_pitch, Angles.p + ppTurretPitchAddition, AimRate * FrameTime() ) or 0
+		else
+			local tAng = (vehicle:GetPos() -vehicle.LockTarget:GetPos()):Angle()
+			-- local tAng = Aimang -vehicle.LockTarget:GetAngles()
+			vehicle.sm_pp_yaw = vehicle.sm_pp_yaw and math.ApproachAngle( vehicle.sm_pp_yaw, tAng.y + ppTurretYawAddition, AimRate * FrameTime() ) or 0
+			vehicle.sm_pp_pitch = vehicle.sm_pp_pitch and math.ApproachAngle( vehicle.sm_pp_pitch, tAng.p + ppTurretPitchAddition, AimRate * FrameTime() ) or 0
+		end
+
+		local TargetAng = Angle(vehicle.sm_pp_pitch,vehicle.sm_pp_yaw,0)
+		TargetAng:Normalize()
+
+		if reverseChasisYaw then
+			vehicle:SetPoseParameter(ppTurretYaw, -TargetAng.y )
+		else
+			vehicle:SetPoseParameter(ppTurretYaw, TargetAng.y )
+		end
+		if reverseChasisPitch then
+			vehicle:SetPoseParameter(ppTurretPitch, -TargetAng.p )
+		else
+			vehicle:SetPoseParameter(ppTurretPitch, TargetAng.p )
+		end
 	end
 end
 

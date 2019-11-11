@@ -9,7 +9,7 @@ local V = {
 	Members = {
 		Mass = 15000,
 		AirFriction = 5,
-		Inertia = Vector(100000,80000,10000),
+		-- Inertia = Vector(100000,80000,10000),
 		
 		OnSpawn = function(ent)
 			ent:SetNWBool("TurretSafeMode",false)
@@ -42,7 +42,7 @@ local V = {
 		EnginePos = Vector(-9.97,-17.44,93.83),
 		
 		CustomWheels = true,
-		CustomSuspensionTravel = 10,
+		CustomSuspensionTravel = 0,
 		
 		CustomWheelModel = "models/props_c17/canisterchunk01g.mdl",
 		

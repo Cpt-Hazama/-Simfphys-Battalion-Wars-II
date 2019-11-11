@@ -13,6 +13,7 @@ BWII_RL_DREADNOUGHT = 7
 BWII_RL_SUBMARINE = 4
 BWII_RL_FRIGATE = 4
 BWII_RL_HEAVYTANK = 4
+BWII_RL_ADVANCEDTANK = 3.5
 BWII_RL_LIGHTTANK = 3
 
 BWII_HP_ANTIAIRVEH = 4400
@@ -20,6 +21,7 @@ BWII_HP_ARTILLERY = 4750
 BWII_HP_APC = 3750
 BWII_HP_BATTLESTATION = 22100
 BWII_HP_HEAVYTANK = 7500
+BWII_HP_ADVANCEDTANK = 6500
 BWII_HP_LIGHTTANK = 4750
 BWII_HP_HEAVYRECON = 3500
 BWII_HP_RECON = 2000
@@ -38,6 +40,7 @@ BWII_DMG_ANTIAIRVEH = 600
 BWII_DMG_ARTILLERY = 2375
 BWII_DMG_BATTLESTATION = 3750
 BWII_DMG_HEAVYTANK = 2100
+BWII_DMG_ADVANCEDTANK = 2400
 BWII_DMG_LIGHTTANK = 1550
 BWII_DMG_MG = 8
 BWII_DMG_HMG = 18
@@ -150,13 +153,19 @@ local function simfphys_HUD_BWII()
 		-- surface.SetDrawColor(255,170,0,255)
 		-- surface.DrawTexturedRectRotated(posXB -scale *(1 -(hp /maxhp)) *0.5,posYB,scale,scaleB,0)
 
-		local scale = ((120 /maxhp) *hp)
-		local scaleB = 35
-		local posXB = 593
-		local posYB = 1037
-		surface.SetMaterial(Material("bwii/bar.vtf"))
-		surface.SetDrawColor(255,170,0,255)
-		surface.DrawTexturedRectRotated(posXB -scale *(1 -(hp /maxhp)) *0.5,posYB,scale,scaleB,0)
+		-- local scale = ((100 /maxhp) *hp) -- Health Bar
+		-- local scaleB = 35
+		-- local posXB = 593
+		-- local posYB = 1037
+		-- surface.SetMaterial(Material("bwii/bar.vtf"))
+		-- surface.SetDrawColor(255,170,0,255)
+		-- local barstuff = (posXB -scale *(1 -(hp /maxhp)) *1)
+		-- surface.DrawTexturedRectRotated(barstuff,posYB,scale +20,scaleB,0)
+
+			-- Temp Bar --
+		local posXB = 545
+		local posYB = 1030
+		draw.RoundedBox(0,posXB,posYB,math.Clamp(hp /100,0,100)*2,15,Color(255,170,0,255))
 
 		local scale = 100
 		local scaleB = 70
