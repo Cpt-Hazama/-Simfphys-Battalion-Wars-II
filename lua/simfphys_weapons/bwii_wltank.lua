@@ -54,7 +54,7 @@ function simfphys.weapon:Initialize( vehicle )
 		net.WriteEntity( vehicle )
 		net.WriteString( class )
 	net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",reloadTime)
 	
 	vehicle.LockTarget = NULL

@@ -1,3 +1,24 @@
+local light_table = {
+	L_HeadLampPos = Vector(-52.1,-69.33,77.12),
+	L_HeadLampAng = Angle(0,0,0),
+	R_HeadLampPos = Vector(52.1,36.8,77.12),
+	R_HeadLampAng = Angle(0,0,0),
+	
+	Headlight_sprites = {
+		Vector(50.1,-85.94,77.19),
+		Vector(50.1,-69.33,77.12),
+		Vector(50.1,52.94,77.19),
+		Vector(50.1,36.8,77.12),
+	},
+	Headlamp_sprites = {
+		Vector(50.1,-85.94,77.19),
+		Vector(50.1,-69.33,77.12),
+		Vector(50.1,52.94,77.19),
+		Vector(50.1,36.8,77.12),
+	},
+}
+list.Set( "simfphys_lights", "bwii_xatank", light_table)
+
 local V = {
 	Name = "Advanced Tank",
 	Model = "models/cpthazama/bwii/xylvania/advancedtank.mdl",
@@ -10,6 +31,7 @@ local V = {
 		Mass = 15000,
 		AirFriction = 5,
 		-- Inertia = Vector(100000,80000,10000),
+		LightsTable = "bwii_xatank",
 		
 		OnSpawn = function(ent)
 			ent:SetNWBool("TurretSafeMode",false)
@@ -68,19 +90,11 @@ local V = {
 			
 		ExhaustPositions = {
 			{
-				pos = Vector(-81.33,20.01,77.08),
+				pos = Vector(-83.25,-22.5,57.03),
 				ang = Angle(0,0,0)
 			},
 			{
-				pos = Vector(-81.33,20.01,77.08),
-				ang = Angle(0,0,0)
-			},
-			{
-				pos = Vector(-81.39,9.17,76.99),
-				ang = Angle(0,0,0)
-			},
-			{
-				pos = Vector(-81.39,9.17,76.99),
+				pos = Vector(-83.25,-22.5,57.03),
 				ang = Angle(0,0,0)
 			},
 		},

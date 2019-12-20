@@ -4,7 +4,7 @@ local icon = "entities/bwii_wartillery.png"
 local name = "Artillery"
 local TEAM = TEAM_FRONTIER
 local driverFPPos = Vector(0,-5,5)
-local driverTPPos = Vector(0,35,95)
+local driverTPPos = Vector(40,-20,40)
 local driverFollowerAttachment = true
 local crosshairDirection = Vector(0,90,0)
 local gunnerFPPos = Vector(0,0,36)
@@ -14,7 +14,7 @@ local gunnerFollowerAttachment = false
 local groundCheckDistance = 235
 local centerVector = Vector(0,0,100)
 
-local fireSound = "cpthazama/bwii/angloisles/VA_Art_Fire.wav"
+local fireSound = "cpthazama/bwii/westernfrontier/VW_Art_Fire.wav"
 local fireSoundVolume = 150
 local fireSoundPitch = 90
 
@@ -24,7 +24,7 @@ local reloadSoundVolume = 90
 local reloadSoundPitch = 90
 local reloadTime = BWII_RL_ARTILLERY
 
-local secondSound = "cpthazama/bwii/angloisles/WA_HMG_Fire_1.wav"
+local secondSound = "cpthazama/bwii/westernfrontier/WW_HMG_Fire_2.wav"
 local secondSoundVolume = 95
 local secondSoundPitch = 100
 
@@ -46,8 +46,8 @@ local mainRadiusDMG = BWII_DMG_ARTILLERY /20
 
 local secondaryAttachment = "turret"
 local secondaryCooldown = 0.1
-local ppSideTurretYaw = "l_yaw"
-local ppSideTurretPitch = "l_pitch"
+local ppSideTurretYaw = "r_yaw"
+local ppSideTurretPitch = "r_pitch"
 
 	-- Code --
 local tblSuspensionData = {} -- Currently unused
@@ -69,7 +69,7 @@ function simfphys.weapon:Initialize( vehicle )
 		-- net.WriteEntity( vehicle )
 		-- net.WriteString( class )
 	-- net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",reloadTime)
 	vehicle.LockTarget = NULL
 	-- vehicle.NextGasTime = CurTime()
@@ -90,7 +90,7 @@ function simfphys.weapon:Initialize( vehicle )
 	-- local output = vehicle:WorldToLocal(pos)
 	-- print(bone,"Vector("..output.x..","..output.y..","..output.z..")")
 
-	simfphys.RegisterCrosshair( vehicle:GetDriverSeat(), { Direction = crosshairDirection, Type = 2 } )
+	simfphys.RegisterCrosshair( vehicle:GetDriverSeat(), { Direction = crosshairDirection, Type = 4 } )
 	simfphys.RegisterCamera( vehicle:GetDriverSeat(), driverFPPos, driverTPPos, false, nil )
 
 	if not istable( vehicle.PassengerSeats ) or not istable( vehicle.pSeat ) then return end
@@ -409,7 +409,7 @@ end
 
 function simfphys.weapon:Think( vehicle )
 	if not IsValid( vehicle ) or not vehicle:IsInitialized() then return end
-	
+
 	vehicle.wOldPos = vehicle.wOldPos or Vector(0,0,0)
 	local deltapos = vehicle:GetPos() - vehicle.wOldPos
 	vehicle.wOldPos = vehicle:GetPos()

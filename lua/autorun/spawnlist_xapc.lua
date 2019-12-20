@@ -171,4 +171,4 @@ local V = {
 		Gears = {-0.1,0,0.1,0.2,0.3}
 	}
 }
-list.Set( "simfphys_vehicles", "bwii_xapc", V )
+-- list.Set( "simfphys_vehicles", "bwii_xapc", V )

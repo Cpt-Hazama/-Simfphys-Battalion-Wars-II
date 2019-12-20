@@ -199,7 +199,6 @@ local V = {
 			{
 				pos = Vector(0,0,185),
 				ang = Angle(0,90,0)
-				-- ang = Angle(0,0,0)
 			},
 		},
 		

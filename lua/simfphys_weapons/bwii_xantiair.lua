@@ -69,7 +69,7 @@ function simfphys.weapon:Initialize( vehicle )
 		net.WriteEntity( vehicle )
 		net.WriteString( class )
 	net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",BWII_RL_ANTIAIRVEH)
 	vehicle.Ammo = 8
 	vehicle.Tube = 2

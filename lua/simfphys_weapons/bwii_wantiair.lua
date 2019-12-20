@@ -7,7 +7,7 @@ local driverFPPos = Vector(-20,-30,0)
 local driverTPPos = Vector(0,20,80)
 local driverFollowerAttachment = true
 local crosshairDirection = Vector(0,90,0)
-local gunnerFPPos = Vector(-50,-20,0)
+local gunnerFPPos = Vector(0,0,0)
 local gunnerTPPos = Vector(0,0,0)
 local gunnerFollowerAttachment = false
 
@@ -69,7 +69,7 @@ function simfphys.weapon:Initialize( vehicle )
 		net.WriteEntity( vehicle )
 		net.WriteString( class )
 	net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",BWII_RL_ANTIAIRVEH)
 	
 	vehicle.Ammo = 8
@@ -455,15 +455,19 @@ function simfphys.weapon:SecondaryAttack( vehicle, ply, shootOrigin, Attachment,
 end
 
 function simfphys.weapon:AimMachinegun( ply, vehicle, pod )	
-	if not IsValid( pod ) then return end
+	if not IsValid(pod) then return end
 
-	local EyeAngles = pod:WorldToLocalAngles( ply:EyeAngles() )
-	EyeAngles:RotateAroundAxis(EyeAngles:Up(),270)
-	local Yaw = EyeAngles.y
-	local Pitch = math.Clamp(EyeAngles.p,-90,90)
+	local Aimang = pod:WorldToLocalAngles(ply:EyeAngles())
+	local AimRate = 250
+	local Angles = vehicle:WorldToLocalAngles(Aimang)
+	vehicle.sm_ppmg_yaw = vehicle.sm_ppmg_yaw && math.ApproachAngle(vehicle.sm_ppmg_yaw,Angles.y,AimRate *FrameTime()) or 180
+	vehicle.sm_ppmg_pitch = vehicle.sm_ppmg_pitch && math.ApproachAngle(vehicle.sm_ppmg_pitch,Angles.p,AimRate *FrameTime()) or 0
 
-	vehicle:SetPoseParameter(ppSideTurretYaw, math.Clamp(Yaw,-90,90))
-	vehicle:SetPoseParameter(ppSideTurretPitch, Pitch )
+	local TargetAng = Angle(vehicle.sm_ppmg_pitch,vehicle.sm_ppmg_yaw,0); TargetAng:Normalize()
+	vehicle.sm_pp_yaw = vehicle.sm_pp_yaw or 180
+
+	vehicle:SetPoseParameter(ppSideTurretYaw,-TargetAng.y)
+	vehicle:SetPoseParameter(ppSideTurretPitch,-TargetAng.p)
 end
 
 function simfphys.weapon:AimCannon( ply, vehicle, pod, Attachment )

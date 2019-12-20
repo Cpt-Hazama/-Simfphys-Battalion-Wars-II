@@ -90,9 +90,11 @@ function ENT:Think()
 end
 
 function ENT:DetectVehicles(v,veh)
-	if v == veh || v:GetParent() == veh then return end
-	if (v:IsVehicle() && v:GetNWInt("bwii_team") == self.Team) then return end
-	if v:IsVehicle() && !IsValid(v.Simfphys_AI) then return end
+	if v == veh then return end
+	if v:GetClass() == "prop_vehicle_prisoner_pod" then return end
+	-- print(v,v:GetNWInt("bwii_team"),self.Team)
+	if (v:GetClass() == "gmod_sent_vehicle_fphysics_base" && v:GetNWInt("bwii_team") == self.Team) then return end
+	if !IsValid(v.Simfphys_AI) then return end
 	veh:SetEnemy(v)
 	veh:SetNWEntity("bwii_ent",v)
 end

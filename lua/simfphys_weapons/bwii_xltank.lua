@@ -69,7 +69,7 @@ function simfphys.weapon:Initialize( vehicle )
 		net.WriteEntity( vehicle )
 		net.WriteString( class )
 	net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",reloadTime)
 	
 	vehicle.LockTarget = NULL
@@ -443,12 +443,6 @@ function simfphys.weapon:AimMachinegun( ply, vehicle, pod )
 	EyeAngles:RotateAroundAxis(EyeAngles:Up(),180)
 	local Yaw = math.Clamp(EyeAngles.y,-180,0)
 	local Pitch = math.Clamp(EyeAngles.x,-90,90)
-
-	-- local Angles = vehicle:WorldToLocalAngles( Aimang )
-	-- Angles:Normalize()
-
-	-- local TargetPitch = Angles.p
-	-- local TargetYaw = Angles.y
 
 	vehicle:SetPoseParameter(ppSideTurretYaw, Yaw +90 )
 	vehicle:SetPoseParameter(ppSideTurretPitch, Pitch )

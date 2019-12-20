@@ -32,10 +32,10 @@ local mainEffectSize = 7
 local mainRadius = 200
 local mainRadiusDMG = 25
 
-local secondaryAttachment = "muzzleTurret"
+local secondaryAttachment = "bt"
 local secondaryCooldown = 0.1
-local ppSideTurretYaw = "turret_yaw"
-local ppSideTurretPitch = "turret_pitch"
+local ppSideTurretYaw = "lt_yaw"
+local ppSideTurretPitch = "lt_pitch"
 
 	-- Code --
 local tblSuspensionData = {
@@ -50,7 +50,7 @@ function simfphys.weapon:Initialize( vehicle )
 		-- net.WriteEntity( vehicle )
 		-- net.WriteString( class )
 	-- net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",reloadTime)
 	
 	-- vehicle:SetNWInt("bwii_hpmax",vehicle:GetMaxHealth())
@@ -60,6 +60,8 @@ function simfphys.weapon:Initialize( vehicle )
 	
 	vehicle.Loop = CreateSound(vehicle,"cpthazama/bwii/solarempire/WS_Chain_Fire.wav")
 	vehicle.Loop:SetSoundLevel(95)
+	vehicle.Loop2 = CreateSound(vehicle,"cpthazama/bwii/solarempire/WS_Chain_Fire.wav")
+	vehicle.Loop2:SetSoundLevel(95)
 
 	simfphys.RegisterCrosshair( vehicle:GetDriverSeat(), { Direction = crosshairDirection, Type = 3 } )
 	simfphys.RegisterCamera( vehicle:GetDriverSeat(), driverFPPos, driverTPPos, driverFollowerAttachment, nil )
@@ -191,7 +193,12 @@ function simfphys.weapon:ControlMachinegun( vehicle, deltapos )
 	local fire = ply:KeyDown( IN_ATTACK )
 
 	if fire then
+		if !vehicle.Loop2:IsPlaying() then
+			vehicle.Loop2:Play()
+		end
 		self:SecondaryAttack( vehicle, ply, shootOrigin, Attachment, ID )
+	else
+		vehicle.Loop2:Stop()
 	end
 end
 
@@ -372,7 +379,8 @@ function simfphys.weapon:PrimaryAttack( vehicle, ply, shootOrigin, Attachment, H
 	effectdata:SetEntity( vehicle )
 	effectdata:SetAttachment( 1 )
 	effectdata:SetScale( 3 )
-	util.Effect( "CS_MuzzleFlash_X", effectdata, true, true )
+	effectdata:SetStart(Vector(0,0,255))
+	util.Effect( "lfs_laser_hit", effectdata, true, true )
 	primary_fire( ply, vehicle, shootOrigin, Attachment.Ang:Forward(), Attachment )
 	self:SetNextPrimaryFire( vehicle, CurTime() + reloadTime )
 end
@@ -385,30 +393,30 @@ function simfphys.weapon:SecondaryAttack( vehicle, ply, shootOrigin, Attachment,
 	effectdata:SetOrigin( shootOrigin )
 	effectdata:SetAngles( Attachment.Ang )
 	effectdata:SetEntity( vehicle )
-	effectdata:SetAttachment( 2 )
+	effectdata:SetAttachment( 1 )
 	effectdata:SetScale( 3 )
-	util.Effect( "CS_MuzzleFlash_X", effectdata, true, true )
+	effectdata:SetStart(Vector(0,0,255))
+	util.Effect( "lfs_laser_hit", effectdata, true, true )
 	
-	secondary_fire( ply, vehicle, shootOrigin, Attachment.Ang:Forward() )
+	primary_fire( ply, vehicle, shootOrigin, Attachment.Ang:Forward(), Attachment )
 	
 	self:SetNextSecondaryFire( vehicle, CurTime() + reloadTime )
 end
 
-function simfphys.weapon:AimMachinegun( ply, vehicle, pod )
-	if not IsValid( pod ) then return end
+function simfphys.weapon:AimMachinegun( ply, vehicle, pod )	
+	if not IsValid(pod) then return end
 
-	local EyeAngles = pod:WorldToLocalAngles( ply:EyeAngles() )
-	EyeAngles:RotateAroundAxis(EyeAngles:Up(),180)
-	local Yaw = math.Clamp(EyeAngles.y,-180,180)
-	local Pitch = math.Clamp(EyeAngles.x,-30,90)
-	
-	-- local ang = pod:GetAngles()
-	-- pod:SetAngles(Angle(ang.x,EyeAngles.y,ang.z))
-	
-	-- pod:SetAngles(Angle(0,Yaw +90,0))
+	local Aimang = pod:WorldToLocalAngles(ply:EyeAngles())
+	local AimRate = 250
+	local Angles = Aimang
+	vehicle.sm_ppmg_yaw = vehicle.sm_ppmg_yaw && math.ApproachAngle(vehicle.sm_ppmg_yaw,Angles.y,AimRate *FrameTime()) or 180
+	vehicle.sm_ppmg_pitch = vehicle.sm_ppmg_pitch && math.ApproachAngle(vehicle.sm_ppmg_pitch,Angles.p,AimRate *FrameTime()) or 0
 
-	-- vehicle:SetPoseParameter(ppSideTurretYaw, Yaw +90 )
-	vehicle:SetPoseParameter(ppSideTurretPitch, Pitch )
+	local TargetAng = Angle(vehicle.sm_ppmg_pitch,vehicle.sm_ppmg_yaw,0); TargetAng:Normalize()
+	vehicle.sm_pp_yaw = vehicle.sm_pp_yaw or 180
+
+	vehicle:SetPoseParameter(ppSideTurretYaw,TargetAng.y -90)
+	vehicle:SetPoseParameter(ppSideTurretPitch,-TargetAng.p)
 end
 
 function simfphys.weapon:AimCannon( ply, vehicle, pod, Attachment )

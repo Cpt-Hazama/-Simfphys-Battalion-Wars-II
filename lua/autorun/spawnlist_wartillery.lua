@@ -73,19 +73,19 @@ local V = {
 		
 		CustomWheelModel = "models/props_c17/canisterchunk01g.mdl",
 		
-		CustomWheelPosFL = Vector(86.580032348633,51.419860839844,35.83984375),
-		CustomWheelPosFR = Vector(86.579696655273,-51.030120849609,35.8408203125),
-		CustomWheelPosML = Vector(3.71004486084,51.420001983643,35.83984375),
-		CustomWheelPosMR = Vector(3.709735870361,-51.030059814453,35.8408203125),
-		CustomWheelPosRL = Vector(-84.33024597168,51.029689788818,35.08984375),
-		CustomWheelPosRR = Vector(-84.33024597168,-51.029689788818,35.08984375),
+		CustomWheelPosFL = Vector(86.580032348633,51.419860839844,32.83984375),
+		CustomWheelPosFR = Vector(86.579696655273,-51.030120849609,32.8408203125),
+		CustomWheelPosML = Vector(3.71004486084,51.420001983643,32.83984375),
+		CustomWheelPosMR = Vector(3.709735870361,-51.030059814453,32.8408203125),
+		CustomWheelPosRL = Vector(-84.33024597168,51.029689788818,32.08984375),
+		CustomWheelPosRR = Vector(-84.33024597168,-51.029689788818,32.08984375),
 		CustomWheelAngleOffset = Angle(0,0,90),
 		
 		CustomMassCenter = Vector(0,0,5),
 		
 		CustomSteerAngle = 60,
 		
-		SeatOffset = Vector(35,1,87),
+		SeatOffset = Vector(-32,-42,87),
 		SeatPitch = 0,
 		SeatYaw = 90,
 		
@@ -95,17 +95,13 @@ local V = {
 		
 		PassengerSeats = {
 			{
-				pos = Vector(-0.37,67.47,37.08),
-				ang = Angle(0,0,0)
-			},
-			{
-				pos = Vector(27.52,-57.73,50.27),
+				pos = Vector(-20,-40.47,50.08),
 				ang = Angle(0,180,0)
 			},
 			{
-				pos = Vector(-3.88,-57.73,50.27),
+				pos = Vector(27.52,-57.73,52.27),
 				ang = Angle(0,180,0)
-			},
+			}
 		},
 		
 		FrontHeight = 20,

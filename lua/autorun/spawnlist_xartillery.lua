@@ -68,8 +68,8 @@ local V = {
 		
 		PassengerSeats = {
 			{
-				pos = Vector(0,0,0),
-				ang = Angle(0,0,0)
+				pos = Vector(60,0,55),
+				ang = Angle(0,-90,0)
 			},
 		},
 		

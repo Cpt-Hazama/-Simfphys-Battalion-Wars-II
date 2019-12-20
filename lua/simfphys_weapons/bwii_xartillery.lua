@@ -69,7 +69,7 @@ function simfphys.weapon:Initialize( vehicle )
 		-- net.WriteEntity( vehicle )
 		-- net.WriteString( class )
 	-- net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",reloadTime)
 	vehicle.LockTarget = NULL
 	vehicle.NextGasTime = CurTime()
@@ -437,13 +437,13 @@ function simfphys.weapon:SecondaryAttack( vehicle, ply, shootOrigin, Attachment,
 	
 	if not self:CanSecondaryAttack( vehicle ) then return end
 	
-	-- local effectdata = EffectData()
-	-- effectdata:SetOrigin( shootOrigin )
-	-- effectdata:SetAngles( Attachment.Ang )
-	-- effectdata:SetEntity( vehicle )
-	-- effectdata:SetAttachment( ID )
-	-- effectdata:SetScale( 1 )
-	-- util.Effect( "CS_MuzzleFlash_X", effectdata, true, true )
+	local effectdata = EffectData()
+	effectdata:SetOrigin( shootOrigin )
+	effectdata:SetAngles( Attachment.Ang )
+	effectdata:SetEntity( vehicle )
+	effectdata:SetAttachment( ID )
+	effectdata:SetScale( 3 )
+	util.Effect( "CS_MuzzleFlash_X", effectdata, true, true )
 	
 	secondary_fire( ply, vehicle, shootOrigin, Attachment.Ang:Forward() )
 	
@@ -451,21 +451,19 @@ function simfphys.weapon:SecondaryAttack( vehicle, ply, shootOrigin, Attachment,
 end
 
 function simfphys.weapon:AimMachinegun( ply, vehicle, pod )	
-	if not IsValid( pod ) then return end
+	if not IsValid(pod) then return end
 
-	local EyeAngles = pod:WorldToLocalAngles( ply:EyeAngles() )
-	EyeAngles:RotateAroundAxis(EyeAngles:Up(),180)
-	local Yaw = math.Clamp(EyeAngles.y,-180,0)
-	local Pitch = math.Clamp(EyeAngles.x,-90,90)
+	local Aimang = pod:WorldToLocalAngles(ply:EyeAngles())
+	local AimRate = 250
+	local Angles = Aimang
+	vehicle.sm_ppmg_yaw = vehicle.sm_ppmg_yaw && math.ApproachAngle(vehicle.sm_ppmg_yaw,Angles.y,AimRate *FrameTime()) or 180
+	vehicle.sm_ppmg_pitch = vehicle.sm_ppmg_pitch && math.ApproachAngle(vehicle.sm_ppmg_pitch,Angles.p,AimRate *FrameTime()) or 0
 
-	-- local Angles = vehicle:WorldToLocalAngles( Aimang )
-	-- Angles:Normalize()
+	local TargetAng = Angle(vehicle.sm_ppmg_pitch,vehicle.sm_ppmg_yaw,0); TargetAng:Normalize()
+	vehicle.sm_pp_yaw = vehicle.sm_pp_yaw or 180
 
-	-- local TargetPitch = Angles.p
-	-- local TargetYaw = Angles.y
-
-	vehicle:SetPoseParameter(ppSideTurretYaw, Yaw +90 )
-	vehicle:SetPoseParameter(ppSideTurretPitch, Pitch )
+	vehicle:SetPoseParameter(ppSideTurretYaw,TargetAng.y -90)
+	vehicle:SetPoseParameter(ppSideTurretPitch,-TargetAng.p)
 end
 
 function simfphys.weapon:AimCannon( ply, vehicle, pod, Attachment )

@@ -7,14 +7,14 @@ function EFFECT:Init( data )
 	local Attachment = vehicle:GetAttachment( ID )
 
 	local Pos = Attachment.Pos
-	local Dir = Attachment.Ang:Up()
+	local Dir = Attachment.Ang:Forward()
 	local vel = vehicle:GetVelocity()
 
 	self.emitter = ParticleEmitter( Pos, false )
 
 	self:Muzzle( Pos, Dir, vel )
 
-	self.Time = 30
+	self.Time = 15
 	self.DieTime = CurTime() + self.Time
 	self.AttachmentID = ID
 	self.Vehicle = vehicle
@@ -47,7 +47,7 @@ function EFFECT:Muzzle( pos, dir, vel )
 			particle:SetAirResistance( math.Rand(300,600) )
 			particle:SetStartAlpha( math.Rand(50,150) )
 			particle:SetStartSize( math.Rand(5,20) )
-			particle:SetEndSize( math.Rand(150,200) )
+			particle:SetEndSize( math.Rand(100,150) )
 			particle:SetRoll( math.Rand(-1,1) )
 			particle:SetColor( rCol,rCol,rCol )
 			particle:SetGravity( VectorRand() * 200 + Vector(0,0,200) )
@@ -76,7 +76,7 @@ function EFFECT:Think()
 		local intensity = (self.DieTime - CurTime()) / self.Time
 
 		local Attachment = vehicle:GetAttachment( self.AttachmentID )
-		local dir = Attachment.Ang:Up()
+		local dir = Attachment.Ang:Forward()
 		local pos = Attachment.Pos + dir * 3
 		if self.emitter then
 			local particle = self.emitter:Add( "particles/smokey", pos )

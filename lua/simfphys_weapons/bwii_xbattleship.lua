@@ -68,7 +68,7 @@ function simfphys.weapon:Initialize( vehicle )
 	vehicle:SetPos(tr.HitPos +Vector(0,0,-80))
 	if IsValid(vehicle:GetPhysicsObject()) then vehicle:GetPhysicsObject():SetBuoyancyRatio(0.02) end
 	
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",reloadTime)
 	
 	
@@ -398,11 +398,11 @@ function simfphys.weapon:antiairfire(data)
 	bullet.HullSize		= data.HullSize
 	bullet.Attacker 		= data.attacker
 	bullet.Callback = function(att, tr, dmginfo)
-		if tr.Entity ~= Entity(0) then
+		-- if tr.Entity ~= Entity(0) then
 			local effectdata = EffectData()
 			effectdata:SetOrigin( tr.HitPos + VectorRand() *400 )
 			util.Effect( "Explosion", effectdata, true, true )
-		end
+		-- end
 	end
 	data.attackingent:FireBullets( bullet )
 	
@@ -421,17 +421,19 @@ function simfphys.weapon:antiairfire(data)
 end
 
 function simfphys.weapon:ControlAntiAir( ply, vehicle, pod )
-	if not IsValid( pod ) then return end
 	local pod = vehicle.pSeat[5]
-	if IsValid(pod) && IsValid(pod:GetDriver()) then
-		local EyeAngles = pod:WorldToLocalAngles( ply:EyeAngles() )
-		-- EyeAngles:RotateAroundAxis(EyeAngles:Right(),180)
-		local Yaw = EyeAngles.y
-		local Pitch = math.Clamp(EyeAngles.p,-90,90)
-
-		vehicle:SetPoseParameter("antiair_yaw", math.Clamp(Yaw,-90,90))
-		vehicle:SetPoseParameter("antiair_pitch", -Pitch )
-	end
+	if not IsValid( pod ) then return end
+	local AimRate = 250
+	local Aimang = pod:WorldToLocalAngles(ply:EyeAngles())
+	Aimang:RotateAroundAxis(Aimang:Up(),90)
+	local Angles = vehicle:WorldToLocalAngles(Aimang)
+	vehicle.sm_pp_aa_yaw = vehicle.sm_pp_aa_yaw && math.ApproachAngle(vehicle.sm_pp_aa_yaw,Angles.y,AimRate *FrameTime()) or 180
+	vehicle.sm_pp_aa_pitch = vehicle.sm_pp_aa_pitch && math.ApproachAngle(vehicle.sm_pp_aa_pitch,Angles.p,AimRate *FrameTime()) or 0
+	local TargetAng = Angle(vehicle.sm_pp_aa_pitch,vehicle.sm_pp_aa_yaw,0)
+	TargetAng:Normalize()
+	vehicle.sm_pp_yaw = vehicle.sm_pp_yaw or 180
+	vehicle:SetPoseParameter("antiair_yaw",Aimang.y)
+	vehicle:SetPoseParameter("antiair_pitch",-TargetAng.p)
 end
 
 local function turret_fire(ply,vehicle,shootOrigin,shootDirection)

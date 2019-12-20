@@ -1,3 +1,5 @@
+// https://trello.com/b/IN2BSbOF/bwii-gmod
+
 TEAM_ANGLO = 13
 TEAM_FRONTIER = 14
 TEAM_SOLAR = 15
@@ -144,28 +146,25 @@ local function simfphys_HUD_BWII()
 		surface.DrawTexturedRectRotated(posX,posY,scale,scaleB,0)
 		
 		-- local scale = ((120 /maxhp) *hp)
-		-- local scaleB = 95
-		-- local posX = 622
-		-- local posY = 996
-		-- local posXB = 585
-		-- local posYB = 1042
-		-- surface.SetMaterial(Material("bwii/bar.vtf"))
-		-- surface.SetDrawColor(255,170,0,255)
-		-- surface.DrawTexturedRectRotated(posXB -scale *(1 -(hp /maxhp)) *0.5,posYB,scale,scaleB,0)
-
-		-- local scale = ((100 /maxhp) *hp) -- Health Bar
 		-- local scaleB = 35
 		-- local posXB = 593
 		-- local posYB = 1037
 		-- surface.SetMaterial(Material("bwii/bar.vtf"))
 		-- surface.SetDrawColor(255,170,0,255)
-		-- local barstuff = (posXB -scale *(1 -(hp /maxhp)) *1)
-		-- surface.DrawTexturedRectRotated(barstuff,posYB,scale +20,scaleB,0)
+		-- surface.DrawTexturedRectRotated(posXB -scale *(1 -(hp /maxhp)) *0.5,posYB,scale,scaleB,0)
+		
+		local scale = ((120 /maxhp) *hp)
+		local scaleB = 35
+		local posXB = 593
+		local posYB = 1037
+		surface.SetMaterial(Material("bwii/bar.vtf"))
+		surface.SetDrawColor(255,170,0,255)
+		surface.DrawTexturedRectRotated((posXB -scale *(1 -(hp /maxhp)) *0.5),posYB,scale,scaleB,0)
 
 			-- Temp Bar --
-		local posXB = 545
-		local posYB = 1030
-		draw.RoundedBox(0,posXB,posYB,math.Clamp(hp /100,0,100)*2,15,Color(255,170,0,255))
+		-- local posXB = 545
+		-- local posYB = 1030
+		-- draw.RoundedBox(0,posXB,posYB,math.Clamp(hp /100,0,100)*2,15,Color(255,170,0,255))
 
 		local scale = 100
 		local scaleB = 70
@@ -182,14 +181,14 @@ local function simfphys_HUD_BWII()
 		surface.SetDrawColor(255,255,255,255)
 		surface.DrawTexturedRectRotated(posX,posY,scale,scale,0)
 		
-		if hp <= maxhp *0.4 then
-			local scale = 85
-			local posX = 591
-			local posY = 945
-			surface.SetMaterial(Material("bwii/enemy.png"))
-			surface.SetDrawColor(255,255,255,255)
-			surface.DrawTexturedRectRotated(posX,posY,scale,scale,0)
-		end
+		-- if hp <= maxhp *0.4 then
+			-- local scale = 85
+			-- local posX = 591
+			-- local posY = 945
+			-- surface.SetMaterial(Material("bwii/enemy.png"))
+			-- surface.SetDrawColor(255,255,255,255)
+			-- surface.DrawTexturedRectRotated(posX,posY,scale,scale,0)
+		-- end
 	end
 end
 hook.Add("HUDPaint","simfphys_HUD_BWII",simfphys_HUD_BWII)

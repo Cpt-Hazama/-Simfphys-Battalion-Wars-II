@@ -4,7 +4,7 @@ local icon = "entities/bwii_shtank.png"
 local name = "Heavy Tank"
 local TEAM = TEAM_SOLAR
 local driverFPPos = Vector(-40,-15,65)
-local driverTPPos = Vector(0,0,40)
+local driverTPPos = Vector(0,0,65)
 local driverFollowerAttachment = true
 local crosshairDirection = Vector(0,90,0)
 local gunnerFPPos = Vector(-50,-20,0)
@@ -71,7 +71,7 @@ function simfphys.weapon:Initialize( vehicle )
 		-- net.WriteEntity( vehicle )
 		-- net.WriteString( class )
 	-- net.Broadcast()
-	vehicle:SetNWInt("bwii_icon",icon)
+	vehicle:SetNWInt("bwii_icon",icon); vehicle:SetNWInt("bwii_team",TEAM)
 	vehicle:SetNWInt("bwii_name",name); vehicle:SetNWFloat("SpecialCam_LoaderTime",reloadTime)
 	vehicle.LockTarget = NULL
 	vehicle.NextGasTime = CurTime()
