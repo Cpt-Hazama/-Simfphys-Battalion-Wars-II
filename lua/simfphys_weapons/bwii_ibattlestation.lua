@@ -633,6 +633,8 @@ function simfphys.weapon:Think( vehicle )
 end
 
 function simfphys.weapon:DoGruntVoices(vehicle,tbl)
+	local h = true
+	if h then return end
 	local pod = vehicle:GetDriverSeat()
 	if not IsValid(pod) then return end
 	local driver = pod:GetDriver()

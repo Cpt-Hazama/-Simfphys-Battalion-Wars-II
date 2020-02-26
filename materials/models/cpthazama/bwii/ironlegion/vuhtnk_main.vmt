@@ -4,6 +4,13 @@
 	"$bumpmap" 	"models/cpthazama/bwii/ironlegion/vuhtnk_main_n"
 	"$alphatest" "1"
 
+	$emissiveBlendEnabled 1
+    $emissiveBlendTexture    "dev/null"
+    $emissiveBlendBaseTexture    "models/cpthazama/bwii/ironlegion/vuhtnk_main_g"
+    $emissiveBlendFlowTexture    "dev/null"
+    $emissiveBlendStrength 1
+    $emissiveBlendScrollVector "[0 0]"
+
 	"$phong" "1"
 	"$phongboost" "1.1"			
 	"$phongfresnelranges"	"[ .2 1.2 8]"	
