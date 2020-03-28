@@ -2,8 +2,21 @@
 {
 	"$baseTexture" "models/cpthazama/bwii/tundranterritories/vtltnk_main_bsta"
 	"$bumpmap" 	"models/cpthazama/bwii/tundranterritories/vtltnk_main_n"
+	"$alphatest" "1"
 
-	"$phong" "1"
-	"$phongboost" "1.1"						
-	"$phongfresnelranges"	"[ .2 1.2 8]"	
+	"$normalmapalphaenvmapmask"	"1"
+	"$phong"				"1"
+	"$phongexponent"			"15"
+	"$phongboost"			"20"
+	"$phongtint"			"[0.1 0.05 0.05]"
+	"$phongfresnelranges"		"[0.67 0.83 1]"
+
+	"$phongalbedotint" 			"1"
+	"$phongexponenttexture" 		"models/cpthazama/bwii/exp_255"
+	"$phongwarptexture" 			"models/cpthazama/bwii/phongwarp_metal2"
+
+	"$rimlight"     "1"
+	"$rimlightexponent"   "1" 
+	"$rimlightboost"   "1"
+	"$rimmask"      "1"
 }
